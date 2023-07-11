@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: app
+    restart: unless-stopped
+    ports:
+      - 16001:8000
+    environment:
+      - TZ=Asia/Shanghai
+      - REDIS_IP=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=Passw0rd!23
+  
+  redis:
+    image: redis:5.0.3
+    container_name: redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    ports:
+      - 16379:6379
+    command: /bin/sh -c "redis-server --requirepass Passw0rd!23"
+
+volumes:
+  redis-data:
+    driver: local
